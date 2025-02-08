@@ -3,14 +3,16 @@ package main
 import (
 	"net/http"
 
+	"github.com/Asker231/auth-service.git/config"
 	"github.com/Asker231/auth-service.git/internal/auth"
 )
 
 func main() {
 	//config
-	
+	cnf := config.LoadAppConfig()
 	//init mux 
 	router := http.NewServeMux()
 	//init handlers
-	auth.NewAuthHandler(router)
+	auth.NewAuthHandler(router,cnf)
+	
 }
