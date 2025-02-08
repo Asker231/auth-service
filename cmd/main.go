@@ -8,11 +8,26 @@ import (
 )
 
 func main() {
+
+
 	//config
 	cnf := config.LoadAppConfig()
+
+
 	//init mux 
 	router := http.NewServeMux()
+
+
 	//init handlers
 	auth.NewAuthHandler(router,cnf)
-	
+
+	//init server struct
+	server := http.Server{
+		Addr: ":8000",
+		Handler: router,
+	}
+	server.ListenAndServe()
+
+
+
 }

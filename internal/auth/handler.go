@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Asker231/auth-service.git/config"
+	"github.com/Asker231/auth-service.git/pkg/req"
 )
 
 
@@ -22,6 +23,11 @@ func NewAuthHandler(router *http.ServeMux,cfg *config.AppConfig){
 func(a *AuthHandler)Register()http.HandlerFunc{
 	return func(w http.ResponseWriter, r *http.Request) {
 		//read,decode,validate body
+		body,err := req.HandleBody[RegisterRequest](w,r)
+		if err != nil{
+			return
+		}
+		w.Write([]byte(body.Email))
 
 	}
 }
@@ -29,6 +35,11 @@ func(a *AuthHandler)Register()http.HandlerFunc{
 func(a *AuthHandler)Login()http.HandlerFunc{
 	return func(w http.ResponseWriter, r *http.Request) {
 			//read,decode,validate body
-			
+		body,err := req.HandleBody[RegisterRequest](w,r)
+		if err != nil{
+			return
+		}
+		w.Write([]byte(body.Email))
+
 	}
 }
