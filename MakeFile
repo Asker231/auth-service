@@ -1,2 +1,8 @@
 dev:
 	go run cmd/main.go
+startdb:
+	docker compose up -d
+stopdb:
+	docker compose down	
+migrate:
+	go run migration/main.go
