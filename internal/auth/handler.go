@@ -1,6 +1,7 @@
 package auth
 
 import (
+
 	"net/http"
 
 	"github.com/Asker231/auth-service.git/config"
@@ -23,6 +24,7 @@ func NewAuthHandler(router *http.ServeMux,cfg *config.AppConfig,service *AuthSer
 	}
 	router.HandleFunc("POST /auth/register",handler.Register())
 	router.Handle("POST /auth/login",middleware.IsAuth(handler.Login(),cfg))
+	router.HandleFunc("GET /home",handler.HomePage())
 }
 
 func(a *AuthHandler)Register()http.HandlerFunc{
@@ -56,12 +58,19 @@ func(a *AuthHandler)Login()http.HandlerFunc{
 		if err != nil{
 			return
 		}
-		userResult,err := a.Service.Login(body.Email,body.Password)
+	     _,err = a.Service.Login(body.Email,body.Password)
 		if err != nil{
 			res.Response(w,err.Error(),404)
 			return
 		}
-		res.Response(w,userResult,200)
 
+		http.Redirect(w,r,"/home",301)
+	}
+}
+
+
+func(a *AuthHandler)HomePage()http.HandlerFunc{
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w,r,"static/index.html")
 	}
 }
